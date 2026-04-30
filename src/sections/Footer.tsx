@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter, Mail, MapPin } from 'lucide-react'
+import { Github, Mail, MapPin } from 'lucide-react'
 
 const footerLinks = {
   product: [
@@ -27,13 +27,6 @@ const footerLinks = {
     { label: 'Licenses', href: '#' }
   ]
 }
-
-const socialLinks = [
-  { icon: Github, href: 'https://github.com/fekikarim', label: 'GitHub' },
-  { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-  { icon: Mail, href: 'mailto:contact@farmy.net', label: 'Email' }
-]
 
 export default function Footer() {
   return (
@@ -67,10 +60,10 @@ export default function Footer() {
             
             {/* Contact Info */}
             <div className="space-y-3">
-              <div className="flex items-center gap-3 text-gray-400">
+              <a href="mailto:contact.farmynet@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-farmy-primary transition-colors">
                 <Mail className="w-5 h-5 text-farmy-primary" />
-                <span>contact@farmy.net</span>
-              </div>
+                <span>contact.farmynet@gmail.com</span>
+              </a>
               <div className="flex items-center gap-3 text-gray-400">
                 <MapPin className="w-5 h-5 text-farmy-primary" />
                 <span>Tunisia</span>
@@ -117,20 +110,31 @@ export default function Footer() {
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={index}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-colors"
-                aria-label={social.label}
-              >
-                <social.icon className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
-              </motion.a>
-            ))}
+            <a
+              href="https://github.com/fekikarim/farmyapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
+              aria-label="Frontend GitHub"
+            >
+              <Github className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
+            </a>
+            <a
+              href="https://github.com/HamaBTW/farmy-backend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
+              aria-label="Backend GitHub"
+            >
+              <Github className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
+            </a>
+            <a
+              href="mailto:contact.farmynet@gmail.com"
+              className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
+              aria-label="Email"
+            >
+              <Mail className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
+            </a>
           </div>
         </div>
       </div>

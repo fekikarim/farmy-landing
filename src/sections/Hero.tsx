@@ -240,8 +240,8 @@ export default function Hero() {
             className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-16"
           >
             {[
-              { value: '4+', label: 'User Roles' },
-              { value: '50+', label: 'Features' },
+              { value: '4', label: 'User Roles' },
+              { value: '10+', label: 'Features' },
               { value: '100%', label: 'Secure' },
             ].map((stat, index) => (
               <motion.div

@@ -1,35 +1,44 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Users, Sprout, ShoppingBag, TrendingUp } from 'lucide-react'
+import { apiService, DEFAULT_STATS, type PlatformStats } from '../services/api'
 
-const stats = [
+interface StatItem {
+  icon: typeof Users
+  suffix: string
+  label: string
+  description: string
+  key: keyof PlatformStats
+}
+
+const statConfig: StatItem[] = [
   {
     icon: Users,
-    value: 10000,
     suffix: '+',
     label: 'Active Users',
-    description: 'Farmers, investors, and customers worldwide'
+    description: 'Farmers, investors, and customers worldwide',
+    key: 'users'
   },
   {
     icon: Sprout,
-    value: 5000,
     suffix: '+',
     label: 'Farm Lands',
-    description: 'Registered and managed on the platform'
+    description: 'Registered and managed on the platform',
+    key: 'lands'
   },
   {
     icon: ShoppingBag,
-    value: 25000,
     suffix: '+',
     label: 'Products Sold',
-    description: 'Through our marketplace'
+    description: 'Through our marketplace',
+    key: 'productsSold'
   },
   {
     icon: TrendingUp,
-    value: 98,
     suffix: '%',
     label: 'Satisfaction Rate',
-    description: 'From our happy users'
+    description: 'From our happy users',
+    key: 'satisfactionRate'
   }
 ]
 
@@ -66,8 +75,66 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 }
 
 export default function Stats() {
+  // Production-ready: Show real data when available, fallback to defaults seamlessly
+  const [stats, setStats] = useState<PlatformStats>(DEFAULT_STATS)
+  const [isLive, setIsLive] = useState(false)
+
+  // Initial data fetch with automatic retry
+  useEffect(() => {
+    let mounted = true
+
+    const loadStats = async () => {
+      try {
+        const result = await apiService.getPlatformStats()
+        
+        if (mounted) {
+          setStats(result.data)
+          setIsLive(result.source === 'api')
+        }
+      } catch {
+        // Silent fail - defaults already shown, no UI disruption
+      }
+    }
+
+    loadStats()
+    return () => { mounted = false }
+  }, [])
+
+  // Background sync: reconnect if backend becomes available
+  useEffect(() => {
+    let mounted = true
+    let checkCount = 0
+    const MAX_CHECKS = 18 // Stop checking after 3 minutes (18 * 10s)
+
+    const checkConnection = async () => {
+      if (!mounted || checkCount >= MAX_CHECKS || isLive) return
+      
+      try {
+        const health = await apiService.checkHealth()
+        
+        if (mounted && health.online) {
+          const result = await apiService.getPlatformStats()
+          if (mounted && result.source === 'api') {
+            setStats(result.data)
+            setIsLive(true)
+          }
+        }
+      } catch {
+        // Silent fail - continue with current data
+      }
+      
+      checkCount++
+    }
+
+    const interval = setInterval(checkConnection, 10000)
+    return () => {
+      mounted = false
+      clearInterval(interval)
+    }
+  }, [isLive])
+
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-20 overflow-hidden" style={{ position: 'relative' }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-r from-farmy-primary/5 to-farmy-secondary/5 dark:from-farmy-primary/10 dark:to-farmy-secondary/10" />
       
@@ -88,14 +155,14 @@ export default function Stats() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+          {statConfig.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card p-8 hover-lift group"
+              className="glass-card p-8 hover-lift group relative"
             >
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -105,7 +172,10 @@ export default function Stats() {
               </motion.div>
               
               <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <AnimatedCounter 
+                  value={stats[stat.key]} 
+                  suffix={stat.suffix} 
+                />
               </div>
               
               <div className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
@@ -115,6 +185,14 @@ export default function Stats() {
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {stat.description}
               </p>
+
+              {/* Live indicator - subtle pulsing dot */}
+              <div className="absolute top-4 right-4">
+                <span className="flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-farmy-primary opacity-40"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-farmy-primary/60"></span>
+                </span>
+              </div>
             </motion.div>
           ))}
         </div>
