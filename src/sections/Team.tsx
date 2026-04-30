@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Globe, Code2 } from 'lucide-react'
+import { Github, Linkedin, Globe, Mail, Code2 } from 'lucide-react'
 
 const teamMembers = [
   {
@@ -7,8 +7,9 @@ const teamMembers = [
     role: 'Lead Developer',
     bio: 'Full-stack developer passionate about building scalable agricultural solutions.',
     github: 'https://github.com/fekikarim',
-    linkedin: 'https://www.linkedin.com/in/karimfeki/',
+    linkedin: 'https://www.linkedin.com/in/karimfeki',
     portfolio: 'https://karimfeki.is-a.dev',
+    email: 'feki.karim28@gmail.com',
     color: 'from-blue-500 to-cyan-500'
   },
   {
@@ -16,17 +17,19 @@ const teamMembers = [
     role: 'Developer',
     bio: 'Creative developer focused on user experience and frontend excellence.',
     github: 'https://github.com/nesrine-derouiche',
-    linkedin: 'https://www.linkedin.com/in/nesrine-derouiche/',
+    linkedin: 'https://linkedin.com/in/nesrine-derouiche',
     portfolio: 'https://nesrine-derouiche.is-a.dev',
+    email: 'nesrine.derouiche15@gmail.com',
     color: 'from-purple-500 to-pink-500'
   },
   {
     name: 'Mohamed Abidi',
     role: 'Developer',
     bio: 'Backend specialist with expertise in database design and API development.',
-    github: 'https://github.com/HamaBTW',
-    linkedin: 'https://www.linkedin.com/in/med-abidi/',
-    portfolio: null,
+    github: 'https://github.com/hamabtw',
+    linkedin: 'https://www.linkedin.com/in/med-abidi',
+    portfolio: 'https://hamabtw.github.io/portfolio',
+    email: 'abidi.mohamed.business@gmail.com',
     color: 'from-orange-500 to-amber-500'
   },
   {
@@ -36,6 +39,7 @@ const teamMembers = [
     github: 'https://github.com/oussemissaoui',
     linkedin: '',
     portfolio: null,
+    email: '',
     color: 'from-teal-500 to-emerald-500'
   },
   {
@@ -43,8 +47,9 @@ const teamMembers = [
     role: 'Developer',
     bio: 'Quality assurance and testing specialist ensuring a bug-free experience.',
     github: 'https://github.com/fatmahidouss',
-    linkedin: 'https://www.linkedin.com/in/fatma-hidoussi-497052236/',
+    linkedin: 'https://www.linkedin.com/in/fatma-hidoussi-497052236',
     portfolio: null,
+    email: '',
     color: 'from-rose-500 to-pink-500'
   }
 ]
@@ -122,42 +127,45 @@ export default function Team() {
                   </p>
                   
                   {/* Social Links */}
-                  <div className="flex items-center justify-center gap-3">
-                    <motion.a
+                  <div className="flex items-center justify-center gap-3 relative z-10">
+                    <a
                       href={member.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 transition-colors"
+                      className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 hover:scale-110 hover:-translate-y-0.5 transition-all duration-200"
                     >
                       <Github className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                    </motion.a>
+                    </a>
                     
                     {member.linkedin && (
-                      <motion.a
+                      <a
                         href={member.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 transition-colors"
+                        className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 hover:scale-110 hover:-translate-y-0.5 transition-all duration-200"
                       >
                         <Linkedin className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                      </motion.a>
+                      </a>
                     )}
                     
                     {member.portfolio && (
-                      <motion.a
+                      <a
                         href={member.portfolio}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 transition-colors"
+                        className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 hover:scale-110 hover:-translate-y-0.5 transition-all duration-200"
                       >
                         <Globe className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                      </motion.a>
+                      </a>
+                    )}
+                    
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 hover:scale-110 hover:-translate-y-0.5 transition-all duration-200"
+                      >
+                        <Mail className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                      </a>
                     )}
                   </div>
                 </div>

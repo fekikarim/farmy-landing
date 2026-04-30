@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Leaf, Github, Linkedin, Twitter, Mail, MapPin } from 'lucide-react'
+import { Github, Linkedin, Twitter, Mail, MapPin } from 'lucide-react'
 
 const footerLinks = {
   product: [
@@ -53,9 +53,11 @@ export default function Footer() {
             className="lg:col-span-2"
           >
             <a href="#" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-farmy-primary to-farmy-secondary flex items-center justify-center">
-                <Leaf className="w-7 h-7 text-white" />
-              </div>
+              <img
+                src="/logo-no-bg.png"
+                alt="Farmy Logo"
+                className="w-12 h-12 object-contain"
+              />
               <span className="text-2xl font-bold">Farmy</span>
             </a>
             <p className="text-gray-400 mb-6 max-w-sm">
