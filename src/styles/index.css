@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    @apply bg-farmy-light dark:bg-farmy-dark;
+    @apply text-gray-900 dark:text-white;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-farmy-primary to-farmy-secondary bg-clip-text text-transparent;
+  }
+  
+  .glass-card {
+    @apply bg-white/80 dark:bg-farmy-surface/80 backdrop-blur-xl;
+    @apply border border-white/20 dark:border-white/10;
+    @apply rounded-2xl shadow-xl;
+  }
+  
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20;
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+    @apply hover:-translate-y-2 hover:shadow-2xl;
+  }
+  
+  .btn-primary {
+    @apply px-8 py-4 rounded-full font-semibold;
+    @apply bg-gradient-to-r from-farmy-primary to-farmy-secondary;
+    @apply text-white shadow-lg shadow-farmy-primary/30;
+    @apply hover:shadow-xl hover:shadow-farmy-primary/40;
+    @apply transition-all duration-300;
+    @apply hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply px-8 py-4 rounded-full font-semibold;
+    @apply bg-white dark:bg-farmy-surface;
+    @apply text-farmy-secondary dark:text-farmy-primary;
+    @apply border-2 border-farmy-primary/30 dark:border-farmy-primary/50;
+    @apply hover:border-farmy-primary hover:bg-farmy-primary/5;
+    @apply transition-all duration-300;
+    @apply hover:scale-105 active:scale-95;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animate-in {
+    animation: animateIn 0.6s ease-out forwards;
+  }
+  
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-farmy-light dark:bg-farmy-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-farmy-primary/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-farmy-primary;
+}
+
+/* Selection */
+::selection {
+  @apply bg-farmy-primary/30 text-farmy-secondary;
+}
