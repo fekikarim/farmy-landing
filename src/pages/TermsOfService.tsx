@@ -171,6 +171,8 @@ export default function TermsOfService() {
               </a>
               <a 
                 href="mailto:contact.farmynet@gmail.com?subject=Legal Question"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-3 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:scale-105 active:scale-95 transition-all text-center inline-block"
               >
                 Contact Legal Team

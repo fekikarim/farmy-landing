@@ -135,6 +135,8 @@ export default function FAQ() {
           </p>
           <motion.a
             href="mailto:contact@farmy.net"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary inline-flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

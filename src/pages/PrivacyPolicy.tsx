@@ -153,6 +153,8 @@ export default function PrivacyPolicy() {
             </p>
             <a 
               href="mailto:contact.farmynet@gmail.com?subject=Privacy Inquiry"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary inline-flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform"
             >
               Contact Us

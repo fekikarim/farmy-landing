@@ -257,6 +257,8 @@ export default function Team() {
                     {member.email && (
                       <a
                         href={`mailto:${member.email}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="p-2 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-farmy-primary/20 hover:scale-110 hover:-translate-y-0.5 transition-all duration-200"
                       >
                         <Mail className="w-5 h-5 text-gray-700 dark:text-gray-300" />

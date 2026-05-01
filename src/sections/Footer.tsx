@@ -10,7 +10,7 @@ const footerLinks = {
   company: [
     { label: 'About Us', href: '#team' },
     { label: 'Our Team', href: '#team' },
-    { label: 'Contact', href: 'mailto:contact.farmynet@gmail.com', email: true }
+    { label: 'Contact', href: 'mailto:contact.farmynet@gmail.com', email: true, external: true }
   ],
   resources: [
     { label: 'Help Center', href: '#faq' },
@@ -54,7 +54,7 @@ export default function Footer() {
             
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="mailto:contact.farmynet@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-farmy-primary transition-colors">
+              <a href="mailto:contact.farmynet@gmail.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-400 hover:text-farmy-primary transition-colors">
                 <Mail className="w-5 h-5 text-farmy-primary" />
                 <span>contact.farmynet@gmail.com</span>
               </a>
@@ -160,6 +160,8 @@ export default function Footer() {
             </a>
             <a
               href="mailto:contact.farmynet@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
               aria-label="Email"
             >

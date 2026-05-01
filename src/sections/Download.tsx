@@ -141,6 +141,8 @@ export default function DownloadSection() {
                     <div className="flex gap-3">
                       <a
                         href="mailto:contact.farmynet@gmail.com?subject=App Waitlist"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex-1 btn-primary text-center"
                       >
                         Join Waitlist
