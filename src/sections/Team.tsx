@@ -1,61 +1,163 @@
-import { motion } from 'framer-motion'
-import { Github, Linkedin, Globe, Mail, Code2 } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Github, Linkedin, Globe, Mail, Code2, Loader2 } from 'lucide-react'
 
-const teamMembers = [
+interface TeamMember {
+  name: string
+  role: string
+  bio: string
+  github: string
+  linkedin: string
+  portfolio: string | null
+  email: string
+  color: string
+  image?: string
+}
+
+const teamMembers: TeamMember[] = [
   {
     name: 'Karim Feki',
-    role: 'Lead Developer',
-    bio: 'Full-stack developer passionate about building scalable agricultural solutions.',
+    role: 'Lead Full-Stack Developer',
+    bio: 'Architects the entire application ecosystem. Manages frontend, backend, API design, and deployment infrastructure with DevOps practices.',
     github: 'https://github.com/fekikarim',
     linkedin: 'https://www.linkedin.com/in/karimfeki',
     portfolio: 'https://karimfeki.is-a.dev',
     email: 'feki.karim28@gmail.com',
-    color: 'from-blue-500 to-cyan-500'
+    color: 'from-blue-500 to-cyan-500',
+    image: '/assets/karim.png'
   },
   {
     name: 'Nesrine Derouiche',
-    role: 'Developer',
-    bio: 'Creative developer focused on user experience and frontend excellence.',
+    role: 'Frontend Developer',
+    bio: 'Crafts pixel-perfect user interfaces and interactive experiences. Specializes in React, TypeScript, responsive design, and UI/UX implementation.',
     github: 'https://github.com/nesrine-derouiche',
     linkedin: 'https://linkedin.com/in/nesrine-derouiche',
     portfolio: 'https://nesrine-derouiche.is-a.dev',
     email: 'nesrine.derouiche15@gmail.com',
-    color: 'from-purple-500 to-pink-500'
+    color: 'from-purple-500 to-pink-500',
+    image: '/assets/nesrine.png'
   },
   {
     name: 'Mohamed Abidi',
-    role: 'Developer',
-    bio: 'Backend specialist with expertise in database design and API development.',
+    role: 'Backend Developer',
+    bio: 'Builds robust server-side architecture and database systems. Expert in Node.js, TypeORM, REST APIs, authentication, and cloud services integration.',
     github: 'https://github.com/hamabtw',
     linkedin: 'https://www.linkedin.com/in/med-abidi',
     portfolio: 'https://hamabtw.github.io/portfolio',
     email: 'abidi.mohamed.business@gmail.com',
-    color: 'from-orange-500 to-amber-500'
+    color: 'from-orange-500 to-amber-500',
+    image: '/assets/mohamed.png'
   },
   {
     name: 'Oussema Issaoui',
-    role: 'Developer',
-    bio: 'Mobile development expert bringing Farmy to iOS and Android platforms.',
+    role: 'Mobile Developer',
+    bio: 'Develops cross-platform mobile applications using Flutter. Handles iOS/Android deployment, native features integration, and mobile UI optimization.',
     github: 'https://github.com/oussemissaoui',
     linkedin: '',
     portfolio: null,
     email: '',
-    color: 'from-teal-500 to-emerald-500'
+    color: 'from-teal-500 to-emerald-500',
+    image: '/assets/oussema.png'
   },
   {
     name: 'Fatma Hidoussi',
-    role: 'Developer',
-    bio: 'Quality assurance and testing specialist ensuring a bug-free experience.',
+    role: 'Marketing & QA Specialist',
+    bio: 'Drives brand awareness and user acquisition strategies. Supports light frontend tasks while leading quality assurance, testing, and product optimization.',
     github: 'https://github.com/fatmahidouss',
     linkedin: 'https://www.linkedin.com/in/fatma-hidoussi-497052236',
     portfolio: null,
-    email: '',
-    color: 'from-rose-500 to-pink-500'
+    email: 'hidoussifatma01@gmail.com',
+    color: 'from-rose-500 to-pink-500',
+    image: '/assets/fatma.jpeg'
   }
 ]
 
 function getInitials(name: string) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase()
+}
+
+// Team Member Avatar with loading and error handling
+function TeamMemberAvatar({ member }: { member: TeamMember }) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
+  // If no image or error, show initials fallback
+  if (!member.image || hasError) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        className={`w-28 h-28 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center mb-6 shadow-lg mx-auto relative overflow-hidden`}
+      >
+        <span className="text-3xl font-bold text-white">
+          {getInitials(member.name)}
+        </span>
+        <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      className="relative w-28 h-28 mx-auto mb-6"
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Loading State */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center shadow-lg z-10`}
+          >
+            <Loader2 className="w-8 h-8 text-white animate-spin" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Image Container */}
+      <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg relative">
+        <img
+          src={member.image}
+          alt={member.name}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover transition-transform duration-500 ease-out"
+          style={{ transform: isHovered ? 'scale(1.1)' : 'scale(1)' }}
+          onLoad={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false)
+            setHasError(true)
+          }}
+        />
+        
+        {/* Hover Overlay */}
+        <motion.div
+          initial={false}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-3"
+        >
+          <span className="text-white text-xs font-medium opacity-90">{member.role}</span>
+        </motion.div>
+      </div>
+
+      {/* Decorative Ring on Hover */}
+      <motion.div
+        initial={false}
+        animate={{ 
+          opacity: isHovered ? 1 : 0,
+          scale: isHovered ? 1.1 : 1 
+        }}
+        className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${member.color} opacity-20 blur-sm -z-10`}
+        transition={{ duration: 0.3 }}
+      />
+    </motion.div>
+  )
 }
 
 export default function Team() {
@@ -104,15 +206,8 @@ export default function Team() {
                 {/* Background Gradient on Hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${member.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                 
-                {/* Avatar */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center mb-6 shadow-lg mx-auto`}
-                >
-                  <span className="text-3xl font-bold text-white">
-                    {getInitials(member.name)}
-                  </span>
-                </motion.div>
+                {/* Avatar with Image */}
+                <TeamMemberAvatar member={member} />
                 
                 {/* Info */}
                 <div className="text-center">

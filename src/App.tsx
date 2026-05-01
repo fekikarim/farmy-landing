@@ -9,11 +9,16 @@ import Team from './sections/Team'
 import FAQ from './sections/FAQ'
 import Download from './sections/Download'
 import Footer from './sections/Footer'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
 import './styles/animations.css'
+
+type Page = 'home' | 'privacy' | 'terms'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [scrollY, setScrollY] = useState(0)
+  const [currentPage, setCurrentPage] = useState<Page>('home')
 
   useEffect(() => {
     // Simulate loading for smooth entrance
@@ -21,6 +26,11 @@ function App() {
     
     const handleScroll = () => setScrollY(window.scrollY)
     window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    // Check URL path for direct navigation
+    const path = window.location.pathname
+    if (path === '/privacy') setCurrentPage('privacy')
+    else if (path === '/terms') setCurrentPage('terms')
     
     return () => {
       clearTimeout(timer)
@@ -139,6 +149,10 @@ function App() {
             </motion.div>
           </motion.div>
         </motion.div>
+      ) : currentPage === 'privacy' ? (
+        <PrivacyPolicy />
+      ) : currentPage === 'terms' ? (
+        <TermsOfService />
       ) : (
         <motion.div
           key="app"

@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import { Apple, Play, Smartphone, Star, Download, Shield } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Apple, Play, Smartphone, Star, Download, Shield, X } from 'lucide-react'
 
 const features = [
   { icon: Star, text: '4.9 Rating' },
@@ -8,6 +9,7 @@ const features = [
 ]
 
 export default function DownloadSection() {
+  const [showComingSoon, setShowComingSoon] = useState(false)
   return (
     <section id="download" className="relative py-24 overflow-hidden">
       {/* Background */}
@@ -77,34 +79,83 @@ export default function DownloadSection() {
               ))}
             </div>
 
-            {/* Download Buttons */}
+            {/* Download Buttons - Coming Soon */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <motion.a
-                href="#"
+              <motion.button
+                onClick={() => setShowComingSoon(true)}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all"
+                className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all cursor-pointer"
               >
                 <Apple className="w-8 h-8" />
                 <div className="text-left">
                   <div className="text-xs opacity-80">Download on the</div>
                   <div className="text-lg font-semibold">App Store</div>
                 </div>
-              </motion.a>
+              </motion.button>
               
-              <motion.a
-                href="#"
+              <motion.button
+                onClick={() => setShowComingSoon(true)}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all"
+                className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all cursor-pointer"
               >
                 <Play className="w-8 h-8" />
                 <div className="text-left">
                   <div className="text-xs opacity-80">Get it on</div>
                   <div className="text-lg font-semibold">Google Play</div>
                 </div>
-              </motion.a>
+              </motion.button>
             </div>
+
+            {/* Coming Soon Modal */}
+            <AnimatePresence>
+              {showComingSoon && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                  onClick={() => setShowComingSoon(false)}
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="bg-white dark:bg-farmy-dark rounded-2xl p-8 max-w-md w-full shadow-2xl"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Coming Soon!</h3>
+                      <button
+                        onClick={() => setShowComingSoon(false)}
+                        className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors"
+                      >
+                        <X className="w-5 h-5 text-gray-500" />
+                      </button>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      Farmy Net mobile app is currently in development. 
+                      Join our waitlist to be notified when we launch!
+                    </p>
+                    <div className="flex gap-3">
+                      <a
+                        href="mailto:contact.farmynet@gmail.com?subject=App Waitlist"
+                        className="flex-1 btn-primary text-center"
+                      >
+                        Join Waitlist
+                      </a>
+                      <button
+                        onClick={() => setShowComingSoon(false)}
+                        className="px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                      >
+                        Later
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* Phone Mockup */}

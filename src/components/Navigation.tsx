@@ -46,7 +46,8 @@ export default function Navigation({ scrollY }: NavigationProps) {
             {/* Logo */}
             <motion.a
               href="#"
-              className="flex items-center gap-3 group"
+              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className="flex items-center gap-3 group cursor-pointer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

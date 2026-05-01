@@ -5,26 +5,20 @@ const footerLinks = {
   product: [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Download', href: '#download' },
-    { label: 'Pricing', href: '#' }
+    { label: 'Download', href: '#download' }
   ],
   company: [
     { label: 'About Us', href: '#team' },
     { label: 'Our Team', href: '#team' },
-    { label: 'Careers', href: '#' },
-    { label: 'Contact', href: '#' }
+    { label: 'Contact', href: 'mailto:contact.farmynet@gmail.com', email: true }
   ],
   resources: [
-    { label: 'Documentation', href: '#' },
     { label: 'Help Center', href: '#faq' },
-    { label: 'API Reference', href: '#' },
-    { label: 'Community', href: '#' }
+    { label: 'API Reference', href: 'https://farmy.giize.com/api-docs', external: true }
   ],
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'Licenses', href: '#' }
+    { label: 'Privacy Policy', href: '/privacy', page: true },
+    { label: 'Terms of Service', href: '/terms', page: true }
   ]
 }
 
@@ -45,7 +39,7 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
-            <a href="#" className="flex items-center gap-3 mb-6">
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3 mb-6 cursor-pointer">
               <img
                 src="/logo-no-bg.png"
                 alt="Farmy Logo"
@@ -84,12 +78,48 @@ export default function Footer() {
               <ul className="space-y-3">
                 {links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-farmy-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    {'external' in link ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-400 hover:text-farmy-primary transition-colors inline-block"
+                      >
+                        {link.label}
+                      </a>
+                    ) : 'page' in link ? (
+                      <a
+                        href={link.href}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          window.location.href = link.href
+                        }}
+                        className="text-gray-400 hover:text-farmy-primary transition-colors inline-block cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : 'email' in link ? (
+                      <a
+                        href={link.href}
+                        className="text-gray-400 hover:text-farmy-primary transition-colors inline-block cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : link.href.startsWith('#') ? (
+                      <a
+                        href={link.href}
+                        className="text-gray-400 hover:text-farmy-primary transition-colors inline-block"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-gray-400 hover:text-farmy-primary transition-colors inline-block"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
