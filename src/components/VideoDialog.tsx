@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Play, Loader2 } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 interface VideoDialogProps {
