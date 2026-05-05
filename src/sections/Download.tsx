@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Apple, Play, Smartphone, Star, Download, Shield, X } from 'lucide-react'
+import ImagePreview from '../components/ImagePreview'
 
 const features = [
   { icon: Star, text: '4.9 Rating' },
@@ -173,10 +174,10 @@ export default function DownloadSection() {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               className="relative"
             >
-              <img
+              <ImagePreview
                 src="/farmy-net-preview.png"
                 alt="Farmy Net App Preview"
-                className="w-72 md:w-80 h-auto rounded-[2rem] shadow-2xl"
+                className="w-72 md:w-80 h-[500px] md:h-[600px] rounded-[2rem] shadow-2xl"
               />
               
               {/* Decorative Elements */}

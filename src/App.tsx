@@ -9,6 +9,7 @@ import Team from './sections/Team'
 import FAQ from './sections/FAQ'
 import Download from './sections/Download'
 import Footer from './sections/Footer'
+import VideoDialog from './components/VideoDialog'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import './styles/animations.css'
@@ -19,6 +20,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [scrollY, setScrollY] = useState(0)
   const [currentPage, setCurrentPage] = useState<Page>('home')
+  const [isVideoOpen, setIsVideoOpen] = useState(false)
 
   useEffect(() => {
     // Simulate loading for smooth entrance
@@ -163,7 +165,7 @@ function App() {
         >
           <Navigation scrollY={scrollY} />
           <main>
-            <Hero />
+            <Hero onWatchDemo={() => setIsVideoOpen(true)} />
             <Stats />
             <Features />
             <HowItWorks />
@@ -171,6 +173,12 @@ function App() {
             <FAQ />
             <Download />
           </main>
+
+          <VideoDialog 
+            isOpen={isVideoOpen} 
+            onClose={() => setIsVideoOpen(false)} 
+            videoId="p4s-_036vlw" 
+          />
           <Footer />
         </motion.div>
       )}

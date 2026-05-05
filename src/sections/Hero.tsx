@@ -9,7 +9,7 @@ const floatingIcons = [
   { Icon: Sprout, delay: 1.5, x: '80%', y: '75%' },
 ]
 
-export default function Hero() {
+export default function Hero({ onWatchDemo }: { onWatchDemo: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -93,7 +93,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-[100svh] flex items-start md:items-center justify-center overflow-hidden"
     >
       {/* Background Canvas for Particles */}
       <canvas
@@ -154,7 +154,7 @@ export default function Hero() {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-20 section-padding w-full max-w-7xl mx-auto"
+        className="relative z-20 section-padding w-full max-w-7xl mx-auto pt-24 md:pt-0"
         style={{ y: ySpring, opacity, scale }}
       >
         <div className="text-center">
@@ -163,7 +163,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-farmy-primary/10 dark:bg-farmy-primary/20 border border-farmy-primary/20 mb-8"
+            className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-farmy-primary/10 dark:bg-farmy-primary/20 border border-farmy-primary/20 mb-6 md:mb-8"
           >
             <Sparkles className="w-4 h-4 text-farmy-primary" />
             <span className="text-sm font-medium text-farmy-secondary dark:text-farmy-primary">
@@ -176,7 +176,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-4 md:mb-6"
           >
             <span className="block text-gray-900 dark:text-white">Farmy</span>
             <span className="block gradient-text mt-2">Net</span>
@@ -207,7 +207,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 md:mt-0"
           >
             <motion.a
               href="#download"
@@ -222,10 +222,7 @@ export default function Hero() {
               className="btn-secondary flex items-center gap-2 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                const features = document.getElementById('features')
-                features?.scrollIntoView({ behavior: 'smooth' })
-              }}
+              onClick={onWatchDemo}
             >
               <Play className="w-5 h-5" />
               Watch Demo
@@ -237,7 +234,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-16"
+            className="mt-12 md:mt-16 flex flex-wrap items-center justify-center gap-6 md:gap-16"
           >
             {[
               { value: '4', label: 'User Roles' },
@@ -264,7 +261,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+        className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden sm:flex"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
