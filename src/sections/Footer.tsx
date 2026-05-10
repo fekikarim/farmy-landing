@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, Mail, MapPin } from 'lucide-react'
+import { Github, Mail, MapPin, Linkedin, Facebook } from 'lucide-react'
 
 const footerLinks = {
   product: [
@@ -157,6 +157,24 @@ export default function Footer() {
               aria-label="Backend GitHub"
             >
               <Github className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/farmy-net/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
+            </a>
+            <a
+              href="https://www.facebook.com/farmynet"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-xl bg-white/5 hover:bg-farmy-primary/20 flex items-center justify-center transition-all hover:scale-110"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-5 h-5 text-gray-400 hover:text-farmy-primary" />
             </a>
             <a
               href="mailto:contact.farmynet@gmail.com"

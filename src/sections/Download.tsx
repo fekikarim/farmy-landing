@@ -1,16 +1,59 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Apple, Play, Smartphone, Star, Download, Shield, X } from 'lucide-react'
+import { Apple, Play, Smartphone, Star, Download, Shield, X, RefreshCcw } from 'lucide-react'
 import ImagePreview from '../components/ImagePreview'
+import { apiService, DEFAULT_STATS, type PlatformStats } from '../services/api'
 
-const features = [
-  { icon: Star, text: '4.9 Rating' },
-  { icon: Download, text: '10K+ Downloads' },
-  { icon: Shield, text: 'Secure & Private' }
-]
+
 
 export default function DownloadSection() {
   const [showComingSoon, setShowComingSoon] = useState(false)
+  const [platform, setPlatform] = useState<'iOS' | 'Android' | null>(null)
+  const [stats, setStats] = useState<PlatformStats>(DEFAULT_STATS)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    let mounted = true
+    const fetchStats = async () => {
+      setIsLoading(true)
+      try {
+        const result = await apiService.getPlatformStats()
+        if (mounted) {
+          setStats(result.data)
+          setIsLoading(false)
+          setError(result.source === 'fallback')
+        }
+      } catch (err) {
+        if (mounted) {
+          setIsLoading(false)
+          setError(true)
+        }
+      }
+    }
+    fetchStats()
+    return () => { mounted = false }
+  }, [])
+
+  const features = [
+    { icon: Star, text: '4.9 Rating' },
+    { 
+      icon: Download, 
+      text: isLoading ? 'Syncing...' : `+${stats.users.toLocaleString()} Downloads`,
+      isDynamic: true 
+    },
+    { icon: Shield, text: 'Secure & Private' }
+  ]
+
+  const handleAppleClick = () => {
+    setPlatform('iOS')
+    setShowComingSoon(true)
+  }
+
+  const handleGooglePlayClick = () => {
+    window.open('https://drive.google.com/uc?export=download&id=1leAXJ3efBGknZaCROlbvtsZNxKYMoxTh', '_blank')
+  }
+
   return (
     <section id="download" className="relative py-24 overflow-hidden">
       {/* Background */}
@@ -61,7 +104,6 @@ export default function DownloadSection() {
               Available on iOS and Android devices.
             </p>
 
-            {/* Features */}
             <div className="flex flex-wrap gap-4 mb-10">
               {features.map((feature, index) => (
                 <motion.div
@@ -70,20 +112,30 @@ export default function DownloadSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 dark:bg-white/5 backdrop-blur-sm"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-transparent hover:border-farmy-primary/20 transition-all"
                 >
-                  <feature.icon className="w-4 h-4 text-farmy-primary" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {feature.isDynamic && isLoading ? (
+                    <RefreshCcw className="w-4 h-4 text-farmy-primary animate-spin" />
+                  ) : (
+                    <feature.icon className="w-4 h-4 text-farmy-primary" />
+                  )}
+                  <span className={`text-sm font-medium ${feature.isDynamic && isLoading ? 'text-farmy-primary/70 animate-pulse' : 'text-gray-700 dark:text-gray-300'}`}>
                     {feature.text}
                   </span>
+                  {feature.isDynamic && !isLoading && !error && (
+                    <span className="flex h-1.5 w-1.5 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-farmy-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-farmy-primary"></span>
+                    </span>
+                  )}
                 </motion.div>
               ))}
             </div>
 
-            {/* Download Buttons - Coming Soon */}
+            {/* Download Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <motion.button
-                onClick={() => setShowComingSoon(true)}
+                onClick={handleAppleClick}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all cursor-pointer"
@@ -96,7 +148,7 @@ export default function DownloadSection() {
               </motion.button>
               
               <motion.button
-                onClick={() => setShowComingSoon(true)}
+                onClick={handleGooglePlayClick}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:shadow-2xl transition-all cursor-pointer"
@@ -126,8 +178,17 @@ export default function DownloadSection() {
                     className="bg-white dark:bg-farmy-dark rounded-2xl p-8 max-w-md w-full shadow-2xl"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Coming Soon!</h3>
+                    <div className="flex justify-between items-center mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-3 rounded-xl bg-farmy-primary/10 dark:bg-farmy-primary/20">
+                          {platform === 'iOS' ? (
+                            <Apple className="w-6 h-6 text-farmy-primary" />
+                          ) : (
+                            <Play className="w-6 h-6 text-farmy-primary" />
+                          )}
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Coming Soon!</h3>
+                      </div>
                       <button
                         onClick={() => setShowComingSoon(false)}
                         className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors"
@@ -135,22 +196,22 @@ export default function DownloadSection() {
                         <X className="w-5 h-5 text-gray-500" />
                       </button>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      Farmy Net mobile app is currently in development. 
-                      Join our waitlist to be notified when we launch!
+                    <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                      The Farmy Net {platform} app is currently in final development and will be available on the {platform === 'iOS' ? 'App Store' : 'Play Store'} very soon. 
+                      Join our waitlist to be the first to know when we launch!
                     </p>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <a
                         href="mailto:contact.farmynet@gmail.com?subject=App Waitlist"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 btn-primary text-center"
+                        className="flex-[2] btn-primary text-center py-4 text-lg"
                       >
                         Join Waitlist
                       </a>
                       <button
                         onClick={() => setShowComingSoon(false)}
-                        className="px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                        className="flex-1 px-6 py-4 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors font-medium"
                       >
                         Later
                       </button>
